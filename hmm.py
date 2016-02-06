@@ -6,8 +6,8 @@ LOSE = 1
 #all the uncapitalised globals will be generated from historical data.
 #just mocking out some crap for now
 p_obs_given_outcome = [
-	[0.1,0.2],
-	[0.1,0.2]
+	[0.1,0.6],
+	[0.1,0.8]
 ]
 
 #first index - first outcome
@@ -19,7 +19,7 @@ p_outcome_given_prev_outcome = [
 
 p_outcome = [0.5, 0.5]
 
-obs = [0,1,0,1] # the number of kills from the last n games
+obs = [0,0,0,1] # the number of kills from the last n games
 
 OUTCOME_TYPES = [WIN, LOSE] 
 OBSERVATION_TYPES = [0, 1] # only doing kill range of 1 to 2 for now
@@ -61,7 +61,7 @@ def backward(outcome, t, max_t):
 def run():
 	#get probabiliy of each observation
 	prob_for_obs = {o: get_obs_given_outcome(o, GAME_COUNT) for o in OBSERVATION_TYPES}
-	print prob_for_obs
+	print prob_for_obs # expected = {0: 0.2999070864365666, 1: 0.39987407767061006}
 
 if __name__ == "__main__":
 	run()
