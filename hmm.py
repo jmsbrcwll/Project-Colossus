@@ -19,11 +19,11 @@ p_outcome_given_prev_outcome = [
 
 p_outcome = [0.5, 0.5]
 
-obs = [0,0,0,1] # the number of kills from the last n games
+obs = [0,0,0,1, 0,  0, 0, 0, 0] # the number of kills from the last n games
 
 OUTCOME_TYPES = [WIN, LOSE] 
 OBSERVATION_TYPES = [0, 1] # only doing kill range of 1 to 2 for now
-GAME_COUNT = 4
+GAME_COUNT = len(obs)
 """
 Gets the probability of a particular future observation given the outcome
 """
@@ -48,20 +48,37 @@ def get_outcome_given_all_prev_obs(outcome, t):
 def forward(outcome, t):
 	if t == 1:
 		return p_outcome[outcome]
-	
-	return sum([p_outcome_given_prev_outcome[outcome][prev_outcome] * forward(prev_outcome, t-1) for prev_outcome in OUTCOME_TYPES])
+
+	ans = [
+			p_outcome_given_prev_outcome[outcome][prev_outcome]
+			*
+			forward(prev_outcome, t-1)
+			for prev_outcome in OUTCOME_TYPES
+	]
+
+	return p_obs_given_outcome[obs[t-1]][outcome] * sum(ans)
 
 
 def backward(outcome, t, max_t):
 	if t == max_t:
 		return 1
 
-	return sum([p_obs_given_outcome[obs[t-1]][next_outcome] * p_outcome_given_prev_outcome[next_outcome][outcome] * backward(outcome, t+1, max_t) for next_outcome in OUTCOME_TYPES])
+	ans = [
+			p_obs_given_outcome[obs[t-1]][next_outcome]
+			*
+			p_outcome_given_prev_outcome[next_outcome][outcome]
+			*
+			backward(outcome, t+1, max_t)
+
+			for next_outcome in OUTCOME_TYPES
+		]
+
+	return sum(ans)
 
 def run():
 	#get probabiliy of each observation
 	prob_for_obs = {o: get_obs_given_outcome(o, GAME_COUNT) for o in OBSERVATION_TYPES}
-	print prob_for_obs # expected = {0: 0.2999070864365666, 1: 0.39987407767061006}
+	print prob_for_obs # expected = {0: 0.2999999999999996, 1: 0.39999999999999947}
 
 if __name__ == "__main__":
 	run()
