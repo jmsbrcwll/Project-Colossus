@@ -6,23 +6,34 @@ LOSE = 1
 #all the uncapitalised globals will be generated from historical data.
 #just mocking out some crap for now
 p_obs_given_outcome = [
-	[0.1,0.6],
-	[0.1,0.8]
+	[0,0],
+	[0,0],
+	[0,0.14],
+	[0.14,0.14],
+	[0.14,0],
+	[0,0.14],
+	[0.14,0],
+	[0,0],
+	[0.14,0],
+	[0,0],
 ]
 
 #first index - first outcome
 #second index - secon outcome
 p_outcome_given_prev_outcome = [
-	[0.1, 0,2],
-	[0.23, 0.5]
+	[0.6, 0.4],
+	[0.5, 0.5]
 ]
 
-p_outcome = [0.5, 0.5]
+p_outcome = [0.57, 0.43]
 
-obs = [0,0,0,1, 0,  0, 0, 0, 0] # the number of kills from the last n games
+
+#obs = [0.6, 0.3, 0.4, 0.7, 0.5, 0.9]
+obs = [5, 2, 3, 6, 4, 8]
+
 
 OUTCOME_TYPES = [WIN, LOSE] 
-OBSERVATION_TYPES = [0, 1] # only doing kill range of 1 to 2 for now
+OBSERVATION_TYPES = [0,1,2,3,4,5,6,7,8,9] # only doing kill range of 1 to 2 for now
 GAME_COUNT = len(obs)
 """
 Gets the probability of a particular future observation given the outcome
